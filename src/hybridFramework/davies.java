@@ -12,6 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 public class davies {
@@ -27,7 +28,8 @@ public class davies {
 		driver.get("https://davies-group.com/");
 
 	}
-
+	
+	@Ignore
 	@Test(priority = 1)
 	public void openTwitterLink() throws InterruptedException {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
@@ -40,14 +42,15 @@ public class davies {
 		Assert.assertEquals(url, "https://twitter.com/Davies_Group");
 	}
 
+	@Ignore
 	@Test(priority = 2)
 	public void openLinkedn() throws InterruptedException {
-		Set<String> winHandles = driver.getWindowHandles();
-		driver.switchTo().window(winHandles.toArray()[0].toString());
 		JavascriptExecutor jse2 = (JavascriptExecutor) driver;
 		jse2.executeScript("window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));");
 		driver.findElement(By.xpath("//*[@href='https://www.linkedin.com/company/daviesgroup/']")).click();
 		Thread.sleep(3000);
+		Set<String> winHandles = driver.getWindowHandles();
+		driver.switchTo().window(winHandles.toArray()[1].toString());
 		Assert.assertEquals(driver.findElement(By.xpath("//*[@id='join-form-submit']")).isDisplayed(), true);
 		String url = driver.getCurrentUrl();
 		if (url.contains("https://www.linkedin.com")) {
@@ -57,6 +60,7 @@ public class davies {
 		}
 	}
 	
+	@Ignore
 	@Test (priority=3)
 		public void Investigation() throws InterruptedException {
 		Set<String>winHandles= driver.getWindowHandles();
@@ -67,13 +71,19 @@ public class davies {
 		jse3.executeScript("window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));");
 		Thread.sleep(3000);
 		driver.findElement(By.xpath("//*[contains(text(),'View All')][@class='cta-button__text learn-more__text']")).click();
-		Thread.sleep(2000);
-		driver.findElement(By.xpath("//*[@id='select2--container']")).sendKeys("Investigation");
-		String fire= driver.findElement(By.xpath("//h1[contains(text(),'Fire investigation')]")).getText();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//span[@id='select2--container']")).sendKeys("Fire investigation");
+		Thread.sleep(3000);
+		JavascriptExecutor jse4 = (JavascriptExecutor)driver;
+		jse3.executeScript("window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));");
+	    String Results= driver.findElement(By.xpath("//h2[contains(text(),'Results')]")).getText();
+	    System.out.println("Results="+Results);
 
 		}
+	
+		//@Ignore
 		@Test(priority=4) 
-		public void location() { 
+		public void location() {
 		WebElement abt =driver.findElement(By.linkText("About")); 
 		Actions actions=new Actions(driver); 
 		actions.moveToElement(abt).build().perform();
@@ -81,16 +91,21 @@ public class davies {
 		driver.findElement(By.xpath("//button[contains(text(),'UK & Ireland')]")).click();
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));");
-		driver.findElement(By.xpath("//*[@id=\"marker0_12\"]")).click();
-		String stoke= driver.findElement(By.xpath("//*[text()='Stoke on Trent']")).getText();
+		//WebElement stokeTrent  = driver.findElement(By.cssSelector("#marker0_12"));
+		WebElement stokeTrent = driver.findElement(By.xpath("//a[text()='UK & Ireland']"));
+		jse.executeScript("arguments[0].scrollIntoView();",stokeTrent);
+		driver.findElement(By.cssSelector("#marker0_12")).click();
+		//stokeTrent.click();
+		driver.findElement(By.cssSelector("#desc0_12 p")).isDisplayed();
+		//System.out.println("STOKE ADDRESS = "+stoke);
+		
 		Assert.assertEquals(driver.findElement(By.xpath("//*[text()='Stoke on Trent']")).isDisplayed(), true);
 		
 		}
 
 		@AfterTest
-		public void closeBrowser() throws InterruptedException {
-	Thread.sleep(2000);
-	driver.close();
+		public void tearDown() {
+		//driver.quit();
 
 
 			
