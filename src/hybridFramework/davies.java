@@ -29,7 +29,6 @@ public class davies {
 
 	}
 	
-	@Ignore
 	@Test(priority = 1)
 	public void openTwitterLink() throws InterruptedException {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
@@ -42,7 +41,6 @@ public class davies {
 		Assert.assertEquals(url, "https://twitter.com/Davies_Group");
 	}
 
-	@Ignore
 	@Test(priority = 2)
 	public void openLinkedn() throws InterruptedException {
 		JavascriptExecutor jse2 = (JavascriptExecutor) driver;
@@ -60,9 +58,8 @@ public class davies {
 		}
 	}
 	
-	@Ignore
 	@Test (priority=3)
-		public void Investigation() throws InterruptedException {
+	public void Investigation() throws InterruptedException {
 		Set<String>winHandles= driver.getWindowHandles();
 		driver.switchTo().window(winHandles.toArray()[0].toString());
 		driver.findElement(By.linkText("Solutions")).click();
@@ -78,12 +75,10 @@ public class davies {
 		jse3.executeScript("window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));");
 	    String Results= driver.findElement(By.xpath("//h2[contains(text(),'Results')]")).getText();
 	    System.out.println("Results="+Results);
-
 		}
 	
-		//@Ignore
-		@Test(priority=4) 
-		public void location() {
+	@Test(priority=4) 
+	public void location() {
 		WebElement abt =driver.findElement(By.linkText("About")); 
 		Actions actions=new Actions(driver); 
 		actions.moveToElement(abt).build().perform();
@@ -91,24 +86,16 @@ public class davies {
 		driver.findElement(By.xpath("//button[contains(text(),'UK & Ireland')]")).click();
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));");
-		//WebElement stokeTrent  = driver.findElement(By.cssSelector("#marker0_12"));
 		WebElement stokeTrent = driver.findElement(By.xpath("//a[text()='UK & Ireland']"));
 		jse.executeScript("arguments[0].scrollIntoView();",stokeTrent);
 		driver.findElement(By.cssSelector("#marker0_12")).click();
-		//stokeTrent.click();
 		driver.findElement(By.cssSelector("#desc0_12 p")).isDisplayed();
-		//System.out.println("STOKE ADDRESS = "+stoke);
-		
 		Assert.assertEquals(driver.findElement(By.xpath("//*[text()='Stoke on Trent']")).isDisplayed(), true);
-		
 		}
 
-		@AfterTest
-		public void tearDown() {
-		//driver.quit();
-
-
-			
-}
+	@AfterTest
+	public void tearDown() {
+		driver.quit();		
+		}
 }
  
